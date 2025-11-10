@@ -1,0 +1,25 @@
+%{
+#include <stdio.h>
+int pos = 0, neg = 0;
+%}
+
+%%
+
+[+-]?[0-9]+   {
+    if (yytext[0] == '-') {
+        neg++; printf("NEGATIVE: %s\n", yytext);
+    } else {
+        pos++; printf("POSITIVE: %s\n", yytext);
+    }
+}
+.|\n          { /* ignore */ }
+
+%%
+
+int yywrap() { return 1; }   /* 👈 add this */
+
+int main() {
+    yylex();
+    printf("Positives = %d, Negatives = %d\n", pos, neg);
+    return 0;
+}
